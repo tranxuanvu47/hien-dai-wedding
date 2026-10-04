@@ -1,52 +1,82 @@
 // ===== Configuration =====
-const WEDDING_DATE = new Date('2026-03-08T17:00:00+07:00'); // March 8, 2026, 5:00 PM Vietnam time
-const TOTAL_IMAGES = 32;
-const GALLERY_PATH = 'images/';
+const WEDDING_DATE = new Date('2026-11-24T11:00:00+07:00'); // Nhà Gái — 24/11/2026, 11:00
+const GALLERY_PATH = 'images3/';
 
 // Google Sheets Web App URL - Paste your URL here after deployment
 // Example: 'https://script.google.com/macros/s/AKfycbx.../exec'
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbza8HK44EVeOtv2Ro-QxuNyKHdUfWJ4Y7JNPkYcZFHpBuqoF610oB7IzWZswLpEflD0/exec'; // TODO: Paste URL from Google Apps Script deployment
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyoEqZLHOvuftSKzzN9fAl_HLFp5XsjJuKqVljSZxpFkhxfV1I70bslhyACKjyJLBAClw/exec'; // TODO: Paste URL from Google Apps Script deployment
 
-// Wedding photo filenames
+const VENUE_NHA_GAI_MAP =
+    'https://www.google.com/maps/place/H%E1%BB%99i+Tr%C6%B0%E1%BB%9Dng+Th%C3%B4n+An+Ph%C3%BA/@12.8600671,108.1198206,17z/data=!3m1!4b1!4m6!3m5!1s0x3171ff00756d2057:0x4c2587c7f2665bd8!8m2!3d12.8600671!4d108.1198206!16s%2Fg%2F11ntdzz5y9!18m1!1e1?entry=ttu';
+const VENUE_NHA_TRAI_MAP =
+    'https://www.google.com/maps/place/Nh%C3%A0+H%C3%A0ng+Th%E1%BA%AFng+L%E1%BB%A3i+bmt/@12.696462,108.0663861,17z/data=!3m1!4b1!4m6!3m5!1s0x3171f7c0e33bf4cd:0x76ffd3b24bdd49c!8m2!3d12.696462!4d108.0689664!16s%2Fg%2F1hc1p56w4!18m1!1e1?entry=ttu';
+
+// Wedding photo filenames (images3, excluding intro portraits)
 const imageFiles = [
-    'LONG8785.jpg', 'LONG8819.jpg', 'LONG8830.jpg', 'LONG8858.jpg',
-    'LONG8877.jpg', 'LONG8887.jpg', 'LONG8896.jpg', 'LONG8931.jpg',
-    'LONG8979.jpg', 'LONG9017.jpg', 'LONG9029.jpg', 'LONG9047.jpg',
-    'LONG9081.jpg', 'LONG9087.jpg', 'LONG9093.jpg', 'LONG9142.jpg',
-    'LONG9171.jpg', 'LONG9215.jpg', 'LONG9228.jpg', 'LONG9230.jpg',
-    'LONG9234.jpg', 'LONG9245.jpg', 'LONG9255.jpg', 'LONG9263.jpg',
-    'LONG9303.jpg', 'LONG9341.jpg', 'LONG9349.jpg', 'LONG9352.jpg',
-    'LONG9357.jpg', 'LONG9362.jpg', 'LONG9374.jpg', 'LONG9410.jpg'
+    '2aOboR18Xjacn6cVjmYhI0b8zrs56v1IZ2EZwvZ2.jpg',
+    '2aOboR18Xjacn6cVjmYhI0oKcweuQDL0ixHH4Q08.jpg',
+    '2aOboR18XjBTUR3W5gIFBxBx0SQ9DeU92HahXgau.jpg',
+    '2aOboR18XjE1bqG9oB6f3rYYPrc8I5RBi1SYDYbA.jpg',
+    '2aOboR18XjFpVdZaxjJRtMtx1STdphwkhWW14rFQ.jpg',
+    '2aOboR18XjnePtEMqik7XunJ10H6wgSbHkEHsKno.jpg',
+    '2aOboR18XjyzRLLvJjLKVKJzRe9dVdrmsHfJRnJg.jpg',
+    '2aOboR18XjZRoSN8dYKxxtl08PhBBBuks5uJXHHs.jpg',
+    '2aOboR18Xk3mDaEAj3ydURtjFYKzV5IXrXYiZRMO.jpg',
+    '2aOboR18Xk3mDaEAj3ydURvgNN0EjVWXOaLuGZns.jpg',
+    '2aOboR18Xk7Ssojo2a8aq8DMiTW6CJP0eJAv3ImW.jpg',
+    '2aOboR18XkaZsTP5WegLCEec3JVszHyaPqd6cY2i.jpg',
+    '2aOboR18Xkcm6U8JiHd2T6pO1uahXkDZpIRVHYYq.jpg',
+    '2aOboR18Xkcm6U8JiHd2T6w6LjrFXvbSvNDPgH3Y.jpg',
+    '2aOboR18XkDrOkDb5QbjR4ecrZTcmRs1s4OADeoC.jpg',
+    '2aOboR18XkGPW9QEnvQ9Iz1x1OqdM78yYZPPFxDs.jpg',
+    '2aOboR18XkMvKXjAMOVrQw7XvNfLuX4huMKzqIts.jpg',
+    '2aOboR18XktDMkf9cHr5AL8KBfiDCY6PTCRDscfw.jpg',
+    '2aOboR18XkvWtEDWJXQLyEFqeAHksY2gQKZiSxRA.jpg',
+    '2aOboR18XkW47z7UdmAN7TKadqtaTu30j3X6EZpA.jpg',
+    '2aOboR18Xl4JnH8R43D93jF4DPj4V9IHPuYufhzM.jpg',
+    '2aOboR18Xl9IjciZzQDPGXKTyJE0G8nlY52puTPE.jpg',
+    '2aOboR18XlCHc4HOFCdvQ9SttGeLY7U47Nnsm73g.jpg',
+    '2aOboR18XlRER71p1Jei2ZTB7isY7x4JrucYI6ZU.jpg',
+    '2aOboR18XlZ05nSsgQiXBJJWlfV1liQ12Pu5y7c0.jpg'
 ];
+const TOTAL_IMAGES = imageFiles.length;
 
 // ===== Translations =====
 const translations = {
     vi: {
         saveTheDate: 'Save The Date',
-        coupleNames: '<span class="groom-name">Xuân Vũ</span><span class="ampersand">&</span><span class="bride-name">Như Hảo</span>',
-        weddingDay: 'Chủ Nhật',
-        weddingMonth: 'Tháng 3, 2026',
-        ceremonyTitle: 'Lễ Vows',
-        venueName: 'LaAn Garden',
+        coupleNames: '<span class="groom-name">Đăng Đại</span><span class="ampersand">&</span><span class="bride-name">Nguyễn Hiền</span>',
+        weddingDay: 'Thứ Ba',
+        weddingMonth: 'Tháng 11, 2026',
+        ceremonyTitle: 'Lễ Cưới',
+        venueName: 'Hội Trường Thôn An Phú',
+        tabNhaGai: 'Nhà Gái',
+        tabNhaTrai: 'Nhà Trai',
+        venueNhaGaiName: 'Hội Trường Thôn An Phú',
+        venueNhaTraiName: 'Nhà hàng Thắng Lợi',
+        nhaGaiDate: '11:00, Thứ Ba, 24 Tháng 11, 2026',
+        nhaTraiDate: '11:00, Thứ Bảy, 28 Tháng 11, 2026',
+        nhaGaiSchedule: 'Tiệc cưới tại Nhà Gái',
+        nhaTraiSchedule: 'Tiệc cưới tại Nhà Trai',
         invitationText: 'Kính mời',
         btnCountdown: 'Đếm Ngược',
         btnLocation: 'Xem Địa Điểm',
         btnRSVP: 'Xác Nhận Tham Dự',
         btnWishes: 'Gửi Lời Chúc',
-        countdownTitle: '🎉 Hôm nay chúng mình cưới nhau rồi! 🎉',
-        countdownSubtitle: 'Khoảnh khắc mà chúng mình đã chờ đợi đã đến!',
+        countdownTitle: '💐 Chúng mình đang đếm ngược đến ngày đặc biệt! 💐',
+        countdownSubtitle: 'Khoảnh khắc mà chúng mình đã chờ đợi sắp đến rồi!',
         labelDays: 'Ngày',
         labelHours: 'Giờ',
         labelMinutes: 'Phút',
         labelSeconds: 'Giây',
         loveQuote: '💕 Today is the beginning of forever! 💕',
         introTitle: 'Giới thiệu',
-        groomName: 'Xuân Vũ',
+        groomName: 'Đăng Đại',
         groomRole: 'Chú rể',
-        groomQuote: 'Anh hứa sẽ luôn bên em, yêu thương và che chở em trọn đời.',
-        brideName: 'Như Hảo',
+        groomQuote: 'Anh từng nghĩ hạnh phúc là điều phải đi tìm. Hóa ra em đã đứng đó, đủ gần để anh gọi là nhà. Anh hứa sẽ yêu em bằng sự dịu dàng mỗi ngày, và bằng lòng kiên nhẫn của cả một đời.',
+        brideName: 'Nguyễn Hiền',
         brideRole: 'Cô dâu',
-        brideQuote: 'Tình yêu của em dành cho anh, như ánh sáng mặt trời, luôn tỏa sáng và ấm áp.',
+        brideQuote: 'Em chọn anh không phải vì một ngày đẹp, mà vì mọi ngày thường phía trước. Cảm ơn anh đã là nơi em được yên, được cười, và được bắt đầu lại.',
         introFooterQuote: 'We may not have it all together, but together, we have it all.',
         timelineTitle: 'Lịch Trình Đám Cưới',
         timelineSubtitle: 'Hành trình lịch và tháng gìa cùng chúng mình trong những khoảnh khắc đặc biệt này',
@@ -56,8 +86,14 @@ const translations = {
         venueSubtitle: 'Hãy tham gia cùng chúng mình tại đây trong ngày đặc biệt này',
         addressLabel: 'Địa Chỉ',
         scheduleLabel: 'Lịch Trình',
-        ceremonyTime: 'Lễ Vows: 17:00 AM\nTiệc: 18:00 AM',
+        ceremonyTime: 'Lễ Thành Hôn: 11:00 AM\nTiệc: 12:00 PM',
         btnDirection: 'Chỉ Đường',
+        giftTitle: 'Hộp quà chú rể, cô dâu',
+        giftModalTitle: 'Hộp Quà Yêu Thương',
+        giftModalSubtitle: 'Quét QR code để gửi yêu thương trực tiếp tới:',
+        btnCopyAccount: 'Sao chép số TK',
+        copiedAccount: 'Đã chép',
+        btnClose: 'Đóng',
         wishesTitle: 'Lời Chúc',
         wishesSubtitle: 'Chia sẻ tình cảm và những lời chúc tốt đẹp nhất cho chúng mình',
         wishesFormTitle: '💕 Chia Sẻ Lời Chúc',
@@ -66,12 +102,12 @@ const translations = {
         btnSendWish: 'Gửi Lời Chúc',
         wishesListTitle: 'Lời Chúc Từ Mọi Người',
         thankYouTitle: 'Thank You!',
-        thankYouText1: 'Cảm ơn bạn đã dành thời gian quý báu tham dự và chia sẻ niềm vui cùng với chúng mình trong ngày đặc biệt này!',
-        thankYouText2: 'Chúng mình biết ai cũng rất bận rộn với công việc, cuộc sống và những lo toan riêng. Vậy nên, sẽ rất tuyệt vời nếu như bạn có thể dành thời gian cho chúng mình. Hạnh Phúc của chúng mình có thêm một góp nhỏ của bạn, cùng chung kiến, cùng cười và cùng lưu giữ những khoảnh khắc đáng nhớ.',
-        thankYouSignature: 'Một lần nữa, chân thành cảm ơn bạn 💕',
-        thankYouTextEn1: 'Thank you for taking the time to share in our special day!',
-        thankYouTextEn2: 'We know everyone is busy with work, life, and family commitments. But it would truly be wonderful to have you present on our Happy Day. We really hope you can join us on this important day to witness and share this happiness with us.',
-        thankYouSignatureEn: 'Once again, sincerely thank you 💕',
+        thankYouText1: 'Điều chúng mình mong nhất trong ngày cưới không phải là một món quà, mà là có bạn ở đó.',
+        thankYouText2: 'Cảm ơn bạn đã bớt chút thời gian giữa bộn bề để đến chung vui, chúc phúc, và cùng Nguyễn Hiền & Đăng Đại giữ lại những khoảnh khắc đầu tiên của một đời hạnh phúc.',
+        thankYouSignature: 'Chúng mình trân trọng bạn, thật lòng 💕',
+        thankYouTextEn1: 'If you can be with us, that is already the gift we hoped for.',
+        thankYouTextEn2: 'We know the days are full — work, family, and a hundred small promises. Still, we would love to look up and find you there, sharing the laughter and the quiet joy of the day we become husband and wife.',
+        thankYouSignatureEn: 'From our hearts, thank you 💕',
         thankYouFooter: '"The best is yet to come"',
         rsvpTitle: 'Xác Nhận Tham Dự',
         rsvpSubtitle: 'Hy vọng sẽ được đón tiếp bạn – vui lòng cho chúng tôi biết nếu bạn có thể tham dự nhé',
@@ -87,34 +123,42 @@ const translations = {
         formSuccess: 'Cảm ơn bạn đã xác nhận! Chúng tôi rất mong được gặp bạn.',
         formError: 'Đã có lỗi xảy ra. Vui lòng thử lại.',
         wishSuccess: 'Cảm ơn bạn đã gửi lời chúc! 💕',
-        dateTimeRow: '17:00, Chủ Nhật, 08 Tháng 3, 2026'
+        dateTimeRow: '24 & 28 Tháng 11, 2026 — Nhà Gái & Nhà Trai'
     },
     en: {
         saveTheDate: 'Save The Date',
-        coupleNames: '<span class="bride-name">Xuân Vũ</span><span class="ampersand">&</span><span class="groom-name">Như Hảo</span>',
-        weddingDay: 'Sunday',
-        weddingMonth: 'March, 2026',
-        ceremonyTitle: 'Wedding Vows',
-        venueName: 'LaAn Garden',
+        coupleNames: '<span class="bride-name">Nguyễn Hiền</span><span class="ampersand">&</span><span class="groom-name">Đăng Đại</span>',
+        weddingDay: 'Tuesday',
+        weddingMonth: 'November, 2026',
+        ceremonyTitle: 'Wedding Ceremony',
+        venueName: 'Hội Trường Thôn An Phú',
+        tabNhaGai: "Bride's Home",
+        tabNhaTrai: "Groom's Home",
+        venueNhaGaiName: 'Hội Trường Thôn An Phú',
+        venueNhaTraiName: 'Nhà hàng Thắng Lợi',
+        nhaGaiDate: '11:00 AM, Tuesday, November 24, 2026',
+        nhaTraiDate: '11:00 AM, Saturday, November 28, 2026',
+        nhaGaiSchedule: 'Reception at Bride\'s Home',
+        nhaTraiSchedule: 'Reception at Groom\'s Home',
         invitationText: 'Cordially Invites',
         btnCountdown: 'Countdown',
         btnLocation: 'View Location',
         btnRSVP: 'RSVP',
         btnWishes: 'Send Wishes',
-        countdownTitle: '🎉 Today is our wedding day! 🎉',
-        countdownSubtitle: 'The moment we\'ve been waiting for has arrived!',
+        countdownTitle: '💐 Counting down to our Big Day! 💐',
+        countdownSubtitle: 'The moment we\'ve been waiting for is almost here!',
         labelDays: 'Days',
         labelHours: 'Hours',
         labelMinutes: 'Minutes',
         labelSeconds: 'Seconds',
         loveQuote: '💕 Today is the beginning of forever! 💕',
         introTitle: 'Introduction',
-        groomName: 'Xuân Vũ',
+        groomName: 'Đăng Đại',
         groomRole: 'Groom',
-        groomQuote: 'I promise to always be by your side, loving and protecting you forever.',
-        brideName: 'Như Hảo',
+        groomQuote: 'I used to think happiness was something I had to search for. Then I found you, close enough to call home. I promise to love you gently, every ordinary day, for the whole of my life.',
+        brideName: 'Nguyễn Hiền',
         brideRole: 'Bride',
-        brideQuote: 'My love for you is like the sunshine, always bright and warm.',
+        brideQuote: 'I choose you not for one beautiful day, but for all the ordinary days after. Thank you for being the place I can rest, laugh, and begin again.',
         introFooterQuote: 'We may not have it all together, but together, we have it all.',
         timelineTitle: 'Wedding Timeline',
         timelineSubtitle: 'Join us in celebrating these special moments',
@@ -124,8 +168,14 @@ const translations = {
         venueSubtitle: 'Join us at this special place on our big day',
         addressLabel: 'Address',
         scheduleLabel: 'Schedule',
-        ceremonyTime: 'Wedding Vows: 5:00 PM\nReception: 6:00 PM',
+        ceremonyTime: 'Wedding Ceremony: 11:00 AM\nReception: 12:00 PM',
         btnDirection: 'Get Directions',
+        giftTitle: 'A gift for the bride and groom',
+        giftModalTitle: 'A Gift of Love',
+        giftModalSubtitle: 'Scan the QR code to send your love directly to:',
+        btnCopyAccount: 'Copy account number',
+        copiedAccount: 'Copied',
+        btnClose: 'Close',
         wishesTitle: 'Wishes',
         wishesSubtitle: 'Share your love and best wishes with us',
         wishesFormTitle: '💕 Share Your Wishes',
@@ -134,14 +184,12 @@ const translations = {
         btnSendWish: 'Send Wishes',
         wishesListTitle: 'Wishes From Everyone',
         thankYouTitle: 'Thank You!',
-        thankYouText1: 'Thank you for taking the time to share in our special day!',
-        thankYouText2: 'We know everyone is busy with work, life, and family commitments. But it would truly be wonderful to have you present on our Happy Day. We really hope you can join us on this important day to witness and share this happiness with us.',
-        thankYouSignature: 'Once again, sincerely thank you 💕',
-        thankYouTextEn1: 'Thank you for taking the time to share in our special day!',
-        thankYouTextEn2: 'We know everyone is busy with work, life, and family commitments. But it would truly be wonderful to have you present on our Happy Day. We really hope you can join us on this important day to witness and share this happiness with us.',
-        thankYouSignatureEn: 'Once again, sincerely thank you 💕',
-        thankYouTextEn2: 'We know everyone is busy with work, life, and family commitments. But it would truly be wonderful to have you present on our Happy Day. We really hope you can join us on this important day to witness and share this happiness with us.',
-        thankYouSignatureEn: 'Once again, sincerely thank you 💕',
+        thankYouText1: 'What we hope for most on our wedding day is not a gift, but to have you there.',
+        thankYouText2: 'Thank you for making a little room in a busy life to celebrate with us, bless us, and keep the first moments of a happy life with Nguyễn Hiền & Đăng Đại.',
+        thankYouSignature: 'We treasure you, truly 💕',
+        thankYouTextEn1: 'If you can be with us, that is already the gift we hoped for.',
+        thankYouTextEn2: 'We know the days are full — work, family, and a hundred small promises. Still, we would love to look up and find you there, sharing the laughter and the quiet joy of the day we become husband and wife.',
+        thankYouSignatureEn: 'From our hearts, thank you 💕',
         thankYouFooter: '"The best is yet to come"',
         rsvpTitle: 'RSVP',
         rsvpSubtitle: 'We hope to celebrate with you — please let us know if you’ll be able to join us',
@@ -157,7 +205,7 @@ const translations = {
         formSuccess: 'Thank you for your RSVP! We look forward to seeing you.',
         formError: 'An error occurred. Please try again.',
         wishSuccess: 'Thank you for your wishes! 💕',
-        dateTimeRow: '5:00 PM, Sunday, March 8, 2026'
+        dateTimeRow: 'Nov 24 & 28, 2026 — Bride\'s & Groom\'s Home'
     }
 };
 
@@ -175,11 +223,128 @@ document.addEventListener('DOMContentLoaded', () => {
     initWishesForm();
     initRSVPForm();
     initScrollReveal();
-    initFallingHearts();
-    initFloatingChibi();
+    // initFallingHearts();
+    //initFloatingChibi();
     initFAB();
+    initVenueDirections();
+    initGiftBox();
+    initMusic();
 });
 
+function initVenueDirections() {
+    const nhaGaiBtn = document.getElementById('directionNhaGai');
+    const nhaTraiBtn = document.getElementById('directionNhaTrai');
+    if (nhaGaiBtn) {
+        nhaGaiBtn.addEventListener('click', () => window.open(VENUE_NHA_GAI_MAP, '_blank', 'noopener'));
+    }
+    if (nhaTraiBtn) {
+        nhaTraiBtn.addEventListener('click', () => window.open(VENUE_NHA_TRAI_MAP, '_blank', 'noopener'));
+    }
+}
+
+function initGiftBox() {
+    const trigger = document.getElementById('giftTrigger');
+    const modal = document.getElementById('giftModal');
+    if (!trigger || !modal) return;
+
+    const openModal = () => {
+        modal.hidden = false;
+        document.body.classList.add('gift-open');
+        const closeBtn = modal.querySelector('.gift-modal-x');
+        if (closeBtn) closeBtn.focus({ preventScroll: true });
+    };
+
+    const closeModal = () => {
+        modal.hidden = true;
+        document.body.classList.remove('gift-open');
+        trigger.focus();
+    };
+
+    trigger.addEventListener('click', openModal);
+    modal.querySelectorAll('[data-gift-close]').forEach((el) => {
+        el.addEventListener('click', closeModal);
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.hidden) closeModal();
+    });
+
+    modal.querySelectorAll('.gift-copy').forEach((button) => {
+        button.addEventListener('click', async () => {
+            const accountNumber = button.dataset.copy;
+            try {
+                await navigator.clipboard.writeText(accountNumber);
+                button.textContent = translations[currentLang].copiedAccount;
+                window.setTimeout(() => {
+                    button.textContent = translations[currentLang].btnCopyAccount;
+                }, 1600);
+            } catch (error) {
+                button.textContent = accountNumber;
+            }
+        });
+    });
+}
+
+function initMusic() {
+    const audio = document.getElementById('bgMusic');
+    const toggle = document.getElementById('musicToggle');
+    if (!audio || !toggle) return;
+
+    let userPaused = false;
+
+    const setPlaying = (isPlaying) => {
+        toggle.classList.toggle('is-playing', isPlaying);
+        toggle.setAttribute('aria-pressed', isPlaying ? 'true' : 'false');
+        const label = currentLang === 'vi'
+            ? (isPlaying ? 'Tắt nhạc nền' : 'Bật nhạc nền')
+            : (isPlaying ? 'Pause music' : 'Play music');
+        toggle.setAttribute('aria-label', label);
+    };
+
+    const tryPlay = () => {
+        if (userPaused || !audio.paused) return;
+        audio.muted = false;
+        const playPromise = audio.play();
+        if (!playPromise) return;
+        playPromise.then(() => setPlaying(true)).catch(() => setPlaying(!audio.paused));
+    };
+
+    toggle.addEventListener('click', (event) => {
+        event.stopPropagation();
+        if (audio.paused) {
+            userPaused = false;
+            tryPlay();
+        } else {
+            userPaused = true;
+            audio.pause();
+            setPlaying(false);
+        }
+    });
+
+    ['pointerdown', 'touchstart', 'keydown', 'scroll'].forEach((eventName) => {
+        window.addEventListener(eventName, tryPlay, { capture: true, passive: true });
+    });
+    window.addEventListener('load', tryPlay);
+    window.addEventListener('pageshow', tryPlay);
+    document.addEventListener('WeixinJSBridgeReady', () => {
+        if (window.WeixinJSBridge) {
+            window.WeixinJSBridge.invoke('getNetworkType', {}, tryPlay);
+            return;
+        }
+        tryPlay();
+    }, false);
+
+    tryPlay();
+    let attempts = 0;
+    const retryTimer = window.setInterval(() => {
+        if (!audio.paused || userPaused || attempts >= 8) {
+            window.clearInterval(retryTimer);
+            if (!audio.paused) setPlaying(true);
+            return;
+        }
+        attempts += 1;
+        tryPlay();
+    }, 500);
+}
 
 function initFAB() {
     const fabPhone = document.getElementById('fabPhone');
@@ -632,7 +797,7 @@ function handleRSVPSubmit(e) {
         type: 'rsvp',
         name: document.getElementById('guestName').value,
         attendance: document.querySelector('input[name="attendance"]:checked').value,
-        guestCount: document.getElementById('guestCount').value,
+        guestCount: document.getElementById('guestCount')?.value ?? '',
         phone: document.getElementById('phone').value,
         message: document.getElementById('message').value,
         timestamp: new Date().toISOString()
@@ -738,7 +903,7 @@ function initFallingHearts() {
         draw() {
             ctx.save();
             ctx.globalAlpha = this.opacity;
-            ctx.fillStyle = '#FFB38A';
+            ctx.fillStyle = '#FFC1CC';
             ctx.font = `${this.size}px Arial`;
             ctx.fillText('💕', this.x, this.y);
             ctx.restore();
