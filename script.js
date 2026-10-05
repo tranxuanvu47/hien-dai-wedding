@@ -320,9 +320,14 @@ function initMusic() {
         }
     });
 
-    ['pointerdown', 'touchstart', 'keydown', 'scroll'].forEach((eventName) => {
-        window.addEventListener(eventName, tryPlay, { capture: true, passive: true });
+    window.__playWeddingMusic = tryPlay;
+    ['touchstart', 'pointerdown', 'pointerup', 'touchend', 'keydown', 'click'].forEach((eventName) => {
+        document.addEventListener(eventName, tryPlay, { capture: true, passive: true });
     });
+    document.addEventListener('touchmove', tryPlay, { capture: true, passive: true });
+    document.addEventListener('wheel', tryPlay, { capture: true, passive: true });
+    document.addEventListener('scroll', tryPlay, { capture: true, passive: true });
+    window.addEventListener('scroll', tryPlay, { capture: true, passive: true });
     window.addEventListener('load', tryPlay);
     window.addEventListener('pageshow', tryPlay);
     document.addEventListener('WeixinJSBridgeReady', () => {
